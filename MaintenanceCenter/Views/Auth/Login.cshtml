@@ -1,0 +1,35 @@
+﻿@{
+    Layout = "_AuthLayout";
+    ViewData["Title"] = "تسجيل الدخول";
+}
+
+<div class="auth-card">
+    <div class="bg-mis-blue text-center text-white py-4">
+        <h4 class="fw-bold mb-0">مركز صيانة الأجهزة العلمية</h4>
+        <small class="text-mis-gold">جامعة أسيوط - كلية الهندسة</small>
+    </div>
+    <div class="p-4 p-md-5">
+        <div class="text-center mb-4">
+            <h5 class="fw-bold text-dark">تسجيل الدخول</h5>
+            <p class="text-muted">أدخل بيانات الاعتماد الخاصة بك للوصول للنظام</p>
+        </div>
+
+        <form id="loginForm">
+            <div class="mb-3">
+                <label class="form-label fw-bold">اسم المستخدم</label>
+                <input type="text" id="UserName" class="form-control form-control-lg bg-light" placeholder="أدخل اسم المستخدم" required autocomplete="username">
+            </div>
+            <div class="mb-4">
+                <label class="form-label fw-bold">كلمة المرور</label>
+                <input type="password" id="Password" class="form-control form-control-lg bg-light" placeholder="أدخل كلمة المرور" required autocomplete="current-password">
+            </div>
+            <button type="submit" id="loginBtn" class="btn btn-mis btn-lg w-100 fw-bold">
+                دخول للنظام
+            </button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/views/auth/login.js"></script>
+}

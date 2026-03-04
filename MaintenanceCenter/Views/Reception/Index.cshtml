@@ -1,0 +1,62 @@
+﻿@{
+    ViewData["Title"] = "استلام جهاز جديد";
+    // We assume _ViewStart.cshtml sets Layout = "_Layout";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3 class="fw-bold text-mis-blue">استلام جهاز جديد</h3>
+    <span class="text-muted">الرئيسية / استلام</span>
+</div>
+
+<form id="receiveDeviceForm" class="row g-4">
+    <div class="col-md-6">
+        <div class="card shadow-sm h-100 border-0">
+            <div class="card-header bg-mis-blue text-white fw-bold">بيانات الجهاز المعطل</div>
+            <div class="card-body bg-white">
+                <div class="mb-3">
+                    <label class="form-label fw-bold">اسم الجهاز <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="DeviceName" placeholder="مثال: ميكروسكوب ضوئي" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">وصف العطل <span class="text-danger">*</span></label>
+                    <textarea class="form-control" id="FaultDescription" rows="3" placeholder="اشرح المشكلة باختصار..." required></textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">حالة الجهاز عند الاستلام (خدوش، كسور، الخ)</label>
+                    <textarea class="form-control" id="DeviceCondition" rows="2" placeholder="أضف أي ملاحظات على الهيكل الخارجي..."></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card shadow-sm h-100 border-0">
+            <div class="card-header bg-mis-blue text-white fw-bold">بيانات الجهة المسلمة</div>
+            <div class="card-body bg-white">
+                <div class="mb-3">
+                    <label class="form-label fw-bold">الجهة القادم منها الجهاز (الكلية/القسم) <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="ClientEntityName" placeholder="مثال: كلية العلوم - قسم النبات" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">اسم الشخص المُسلّم <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="DelivererName" placeholder="الاسم الرباعي" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">رقم هاتف المُسلّم <span class="text-danger">*</span></label>
+                    <input type="tel" class="form-control" id="DelivererPhone" placeholder="رقم الموبايل للتواصل" required>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 text-end mt-4">
+        <button type="reset" class="btn btn-outline-secondary me-2 px-4">إلغاء وتفريغ الحقول</button>
+        <button type="submit" id="saveBtn" class="btn btn-mis px-5 fw-bold shadow-sm">
+            💾 حفظ وإصدار كود المتابعة
+        </button>
+    </div>
+</form>
+
+@section Scripts {
+    <script src="~/js/views/reception/index.js"></script>
+}

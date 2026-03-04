@@ -1,0 +1,6 @@
+﻿namespace MaintenanceCenter.Web.Views.Shared
+{
+    public class _Layout
+    {
+    }
+}
