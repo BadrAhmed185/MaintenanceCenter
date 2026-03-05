@@ -10,10 +10,10 @@ namespace MaintenanceCenter.Web.Controllers.Mvc
         public IActionResult Login()
         {
             // If the user is already authenticated, redirect them to the app
-            if (User.Identity != null && User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Index", "Reception"); // Or route based on role later
-            }
+            //if (User.Identity != null && User.Identity.IsAuthenticated)
+            //{
+            //    return RedirectToAction("Index", "Reception"); // Or route based on role later
+            //}
 
             return View();
         }

@@ -27,7 +27,7 @@ namespace MaintenanceCenter.Web.Controllers.Api
                     HttpOnly = true,
                     Secure = true,
                     SameSite = SameSiteMode.Strict,
-                    Expires = DateTime.UtcNow.AddHours(24)
+                    Expires = DateTime.UtcNow.AddHours(7)
                 };
 
                 // Put ONLY the token in the secure cookie
