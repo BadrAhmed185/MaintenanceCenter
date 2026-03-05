@@ -1,0 +1,81 @@
+﻿@{
+    ViewData["Title"] = "إدارة المستخدمين";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3 class="fw-bold text-mis-blue">👥 إدارة مستخدمي النظام</h3>
+    <button class="btn btn-mis fw-bold px-4" data-bs-toggle="modal" data-bs-target="#userModal">
+        ➕ إضافة مستخدم جديد
+    </button>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-mis-blue text-white">
+                    <tr>
+                        <th>الاسم بالكامل</th>
+                        <th>اسم المستخدم</th>
+                        <th>الصلاحية (الدور)</th>
+                        <th>الورشة التابع لها</th>
+                        <th class="text-center">الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody id="usersTableBody">
+                    <tr><td colspan="5" class="text-center py-4">جاري التحميل...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="userModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title fw-bold text-mis-blue">إضافة مستخدم</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="userForm">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">الاسم بالكامل <span class="text-danger">*</span></label>
+                        <input type="text" id="DisplayName" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">اسم المستخدم (للدخول) <span class="text-danger">*</span></label>
+                        <input type="text" id="UserName" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">كلمة المرور <span class="text-danger">*</span></label>
+                        <input type="password" id="Password" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">الصلاحية <span class="text-danger">*</span></label>
+                        <select id="Role" class="form-select" required>
+                            <option value="">-- اختر الصلاحية --</option>
+                            <option value="Admin">مدير نظام (Admin)</option>
+                            <option value="Receptionist">استقبال (Receptionist)</option>
+                            <option value="Technician">فني صيانة (Technician)</option>
+                        </select>
+                    </div>
+                    <div class="mb-3 d-none" id="workshopContainer">
+                        <label class="form-label fw-bold">الورشة <span class="text-danger">*</span></label>
+                        <select id="WorkshopId" class="form-select">
+                            <option value="">-- اختر الورشة --</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="submit" id="saveUserBtn" class="btn btn-mis px-4">💾 حفظ</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/views/admin/users.js"></script>
+}

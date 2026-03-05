@@ -27,6 +27,12 @@ namespace MaintenanceCenter.Infrastructure.Repositories
             return await _dbSet.ToListAsync();
         }
 
+
+        public IQueryable<T> GetQueryable()
+        {
+            return _dbSet.AsQueryable();
+        }
+
         public async Task<IReadOnlyList<T>> FindAsync(Expression<Func<T, bool>> predicate)
         {
             return await _dbSet.Where(predicate).ToListAsync();

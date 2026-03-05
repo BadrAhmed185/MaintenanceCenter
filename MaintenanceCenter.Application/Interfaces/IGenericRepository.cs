@@ -7,6 +7,8 @@ namespace MaintenanceCenter.Application.Interfaces
         Task<T?> GetByIdAsync(int id);
         Task<IReadOnlyList<T>> GetAllAsync();
 
+        IQueryable<T> GetQueryable();
+
         // Allows filtering (e.g., getting requests by status or by workshop)
         Task<IReadOnlyList<T>> FindAsync(Expression<Func<T, bool>> predicate);
 

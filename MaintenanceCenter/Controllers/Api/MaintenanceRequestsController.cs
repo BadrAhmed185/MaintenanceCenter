@@ -30,12 +30,29 @@ namespace MaintenanceCenter.Web.Controllers.Api
             return HandleResult(result);
         }
 
+
+        [HttpGet("filter")]
+        public async Task<ActionResult> GetFiltered([FromQuery] DeviceFilterDto filter)
+        {
+            var result = await _requestService.GetFilteredAsync(filter);
+            return HandleResult(result);
+        }
+
         [HttpPost("receive")]
         public async Task<ActionResult> ReceiveDevice([FromBody] CreateMaintenanceRequestDto dto)
         {
             if (!TryValidate(out var error)) return error!;
 
             var result = await _requestService.ReceiveDeviceAsync(dto);
+            return HandleResult(result);
+        }
+
+        [HttpPost("assign")]
+        public async Task<ActionResult> AssignDevice([FromBody] AssignDeviceDto dto)
+        {
+            if (!TryValidate(out var error)) return error!;
+
+            var result = await _requestService.AssignToTechnicianAsync(dto);
             return HandleResult(result);
         }
     }

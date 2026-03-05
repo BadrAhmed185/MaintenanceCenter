@@ -1,0 +1,76 @@
+﻿@{
+    ViewData["Title"] = "لوحة تحكم الإدارة";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3 class="fw-bold text-mis-blue">📋 صندوق الوارد (الأجهزة بانتظار التوجيه)</h3>
+    <span class="text-muted">الإدارة / صندوق الوارد</span>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-mis-blue text-white">
+                    <tr>
+                        <th>كود المتابعة</th>
+                        <th>اسم الجهاز</th>
+                        <th>الجهة</th>
+                        <th>تاريخ الاستلام</th>
+                        <th>الحالة</th>
+                        <th class="text-center">الإجراء</th>
+                    </tr>
+                </thead>
+                <tbody id="inboxTableBody">
+                    <tr>
+                        <td colspan="6" class="text-center text-muted py-4">
+                            <span class="spinner-border spinner-border-sm me-2"></span> جاري تحميل البيانات...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="assignModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title fw-bold text-mis-blue">⚙️ توجيه الجهاز للفحص</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="assignForm">
+                <div class="modal-body">
+                    <input type="hidden" id="assignRequestId">
+
+                    <div class="alert alert-info py-2 mb-4">
+                        <span class="fw-bold">كود الجهاز:</span> <span id="assignTrackingCode" class="ms-2">---</span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">اختر الورشة <span class="text-danger">*</span></label>
+                        <select class="form-select" id="assignWorkshop" required>
+                            <option value="">-- اختر الورشة --</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">اختر الفني المختص <span class="text-danger">*</span></label>
+                        <select class="form-select" id="assignTechnician" required disabled>
+                            <option value="">-- يرجى اختيار الورشة أولاً --</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="submit" id="assignSubmitBtn" class="btn btn-mis px-4 fw-bold">💾 حفظ التوجيه</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/views/admin/dashboard.js"></script>
+}

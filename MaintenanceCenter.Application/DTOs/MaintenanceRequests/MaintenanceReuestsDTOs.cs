@@ -55,7 +55,44 @@ namespace MaintenanceCenter.Application.DTOs.MaintenanceRequests
             [MaxLength(500, ErrorMessage = "وصف حالة الجهاز يجب ألا يتجاوز 500 حرف.")]
             public string DeviceCondition { get; set; } = string.Empty;
         }
+
+
+
+
+    public class DeviceFilterDto
+    {
+        // For searching by Tracking Code or Device Name
+        public string? SearchTerm { get; set; }
+
+        public DeviceStatus? Status { get; set; }
+        public int? WorkshopId { get; set; }
+        public string? TechnicianId { get; set; }
+
+        // For date range filtering
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+
+        // Pagination to prevent browser crashing with large data
+        public int PageNumber { get; set; } = 1;
+        public int PageSize { get; set; } = 50;
     }
+
+
+
+        public class AssignDeviceDto
+        {
+            [Required(ErrorMessage = "رقم الطلب مطلوب.")]
+            public int RequestId { get; set; }
+
+            [Required(ErrorMessage = "يجب اختيار الورشة.")]
+            [Range(1, int.MaxValue, ErrorMessage = "ورشة غير صالحة.")]
+            public int WorkshopId { get; set; }
+
+            [Required(ErrorMessage = "يجب اختيار الفني.")]
+            public string TechnicianId { get; set; } = string.Empty;
+        }
+    }
+
 
 
 

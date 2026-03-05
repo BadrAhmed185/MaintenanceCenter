@@ -1,0 +1,48 @@
+﻿@{
+    ViewData["Title"] = "إدارة الورش";
+}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3 class="fw-bold text-mis-blue">🏢 إدارة ورش الصيانة</h3>
+    <button class="btn btn-mis fw-bold px-4" data-bs-toggle="modal" data-bs-target="#workshopModal">➕ إضافة ورشة جديدة</button>
+</div>
+<div class="card shadow-sm border-0">
+    <div class="card-body p-0">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="bg-mis-blue text-white">
+                <tr><th>اسم الورشة</th><th>الوصف</th><th class="text-center">الإجراءات</th></tr>
+            </thead>
+            <tbody id="workshopsTableBody"></tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="workshopModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title fw-bold text-mis-blue">بيانات الورشة</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="workshopForm">
+                <div class="modal-body">
+                    <input type="hidden" id="WorkshopId">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">اسم الورشة <span class="text-danger">*</span></label>
+                        <input type="text" id="WorkshopName" class="form-control" required minlength="3">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">وصف الورشة</label>
+                        <textarea id="WorkshopDesc" class="form-control" rows="2"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-mis px-4">💾 حفظ</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="~/js/views/admin/workshops.js"></script>
+}

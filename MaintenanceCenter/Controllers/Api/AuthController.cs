@@ -64,5 +64,18 @@ namespace MaintenanceCenter.Web.Controllers.Api
             Response.Cookies.Delete("jwt");
             return Ok(new { succeeded = true, message = "تم تسجيل الخروج" });
         }
+
+
+
+        [HttpGet("users")]
+        // [Authorize(Roles = "Admin")]
+        public async Task<ActionResult> GetAllUsers()
+        {
+            var result = await _authService.GetAllUsersAsync();
+            return HandleResult(result);
+        }
     }
+
+
+
 }

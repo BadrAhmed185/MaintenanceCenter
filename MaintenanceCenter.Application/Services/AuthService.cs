@@ -3,6 +3,7 @@ using MaintenanceCenter.Application.DTOs.Auth;
 using MaintenanceCenter.Application.Interfaces;
 using MaintenanceCenter.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace MaintenanceCenter.Application.Services
 {
@@ -84,6 +85,32 @@ namespace MaintenanceCenter.Application.Services
             await _userManager.AddToRoleAsync(user, dto.Role);
 
             return ServiceResult<string>.Success("تم إنشاء المستخدم بنجاح");
+        }
+
+
+        public async Task<ServiceResult<IEnumerable<object>>> GetAllUsersAsync()
+        {
+            // Fetch all users with their roles and workshops
+            var users = await _userManager.Users
+                .Include(u => u.Workshop)
+                .Where(u => !u.IsDeleted)
+                .ToListAsync();
+
+            var userList = new List<object>();
+            foreach (var user in users)
+            {
+                var roles = await _userManager.GetRolesAsync(user);
+                userList.Add(new
+                {
+                    Id = user.Id,
+                    DisplayName = user.DisplayName,
+                    UserName = user.UserName,
+                    Role = roles.FirstOrDefault() ?? "بدون صلاحية",
+                    WorkshopName = user.Workshop?.Name ?? "---"
+                });
+            }
+
+            return ServiceResult<IEnumerable<object>>.Success(userList);
         }
     }
 }

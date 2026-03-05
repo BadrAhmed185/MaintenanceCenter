@@ -7,5 +7,7 @@ namespace MaintenanceCenter.Application.Interfaces
     {
         Task<ServiceResult<AuthResponseDto>> LoginAsync(LoginDto dto);
         Task<ServiceResult<string>> RegisterAsync(RegisterDto dto);
+
+        Task<ServiceResult<IEnumerable<object>>> GetAllUsersAsync(); // Using object/dynamic for simplicity in the UI, or create a UserDto
     }
 }

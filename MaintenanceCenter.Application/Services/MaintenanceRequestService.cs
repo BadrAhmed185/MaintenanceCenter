@@ -3,6 +3,7 @@ using MaintenanceCenter.Application.DTOs.MaintenanceRequests;
 using MaintenanceCenter.Application.Interfaces;
 using MaintenanceCenter.Domain.Entities;
 using MaintenanceCenter.Domain.Enums;
+using Microsoft.EntityFrameworkCore;
 
 namespace MaintenanceCenter.Application.Services
 {
@@ -77,6 +78,66 @@ namespace MaintenanceCenter.Application.Services
             return ServiceResult<MaintenanceRequestDto>.Success(ToDto(request));
         }
 
+
+        // ... inside MaintenanceRequestService class ...
+
+        public async Task<ServiceResult<IEnumerable<MaintenanceRequestDto>>> GetFilteredAsync(DeviceFilterDto filter)
+        {
+            // 1. Start the query and include related tables to get their names for the DTO
+            var query = _uow.MaintenanceRequests.GetQueryable()
+                .Include(r => r.Workshop)
+                .Include(r => r.Technician)
+                .Include(r => r.Receptionist)
+                .AsNoTracking(); // Optimization: We only want to read data, not track it for updates
+
+            // 2. Dynamically apply filters
+            if (!string.IsNullOrWhiteSpace(filter.SearchTerm))
+            {
+                var term = filter.SearchTerm.Trim().ToLower();
+                query = query.Where(r => r.TrackingCode.ToLower().Contains(term) ||
+                                         r.DeviceName.ToLower().Contains(term));
+            }
+
+            if (filter.Status.HasValue)
+            {
+                query = query.Where(r => r.Status == filter.Status.Value);
+            }
+
+            if (filter.WorkshopId.HasValue)
+            {
+                query = query.Where(r => r.WorkshopId == filter.WorkshopId.Value);
+            }
+
+            if (!string.IsNullOrWhiteSpace(filter.TechnicianId))
+            {
+                query = query.Where(r => r.TechnicianId == filter.TechnicianId);
+            }
+
+            if (filter.StartDate.HasValue)
+            {
+                query = query.Where(r => r.CreatedAt >= filter.StartDate.Value);
+            }
+
+            if (filter.EndDate.HasValue)
+            {
+                query = query.Where(r => r.CreatedAt <= filter.EndDate.Value);
+            }
+
+            // 3. Sorting (Newest devices first)
+            query = query.OrderByDescending(r => r.CreatedAt);
+
+            // 4. Pagination (Skip and Take)
+            var skipAmount = (filter.PageNumber - 1) * filter.PageSize;
+
+            // 5. Execute the query against SQL Server
+            var results = await query.Skip(skipAmount).Take(filter.PageSize).ToListAsync();
+
+            // 6. Map to DTOs
+            var dtos = results.Select(ToDto).ToList();
+
+            return ServiceResult<IEnumerable<MaintenanceRequestDto>>.Success(dtos);
+        }
+
         public async Task<ServiceResult<MaintenanceRequestDto>> ReceiveDeviceAsync(CreateMaintenanceRequestDto dto)
         {
             var userId = _currentUserService.UserId;
@@ -108,6 +169,38 @@ namespace MaintenanceCenter.Application.Services
             string datePart = DateTime.UtcNow.ToString("yyyyMMdd");
             string randomPart = Guid.NewGuid().ToString().Substring(0, 4).ToUpper();
             return $"REQ-{datePart}-{randomPart}";
+        }
+
+
+
+
+        public async Task<ServiceResult<bool>> AssignToTechnicianAsync(AssignDeviceDto dto)
+        {
+            var request = await _uow.MaintenanceRequests.GetByIdAsync(dto.RequestId);
+
+            if (request == null)
+                return ServiceResult<bool>.Failure("الطلب غير موجود.");
+
+            // State Machine validation: We can only assign devices that are newly received
+            if (request.Status != DeviceStatus.Received)
+                return ServiceResult<bool>.Failure("لا يمكن توجيه هذا الجهاز لأن حالته الحالية لا تسمح بذلك.");
+
+            // Validate Workshop and Technician exist
+            var workshop = await _uow.Workshops.GetByIdAsync(dto.WorkshopId);
+            if (workshop == null) return ServiceResult<bool>.Failure("الورشة المحددة غير موجودة.");
+
+            // Update the request
+            request.WorkshopId = dto.WorkshopId;
+            request.TechnicianId = dto.TechnicianId;
+            request.Status = DeviceStatus.UnderInspection; // Move to the next state!
+
+            _uow.MaintenanceRequests.Update(request);
+            var saved = await _uow.CompleteAsync();
+
+            if (saved <= 0)
+                return ServiceResult<bool>.Failure("حدث خطأ أثناء حفظ التوجيه.");
+
+            return ServiceResult<bool>.Success(true, "تم توجيه الجهاز للفني بنجاح.");
         }
     }
 }  

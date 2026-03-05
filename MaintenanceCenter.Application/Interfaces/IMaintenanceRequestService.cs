@@ -9,8 +9,13 @@ namespace MaintenanceCenter.Application.Interfaces
         Task<ServiceResult<IEnumerable<MaintenanceRequestDto>>> GetAllAsync();
         Task<ServiceResult<MaintenanceRequestDto>> GetByIdAsync(int id);
 
+        Task<ServiceResult<IEnumerable<MaintenanceRequestDto>>> GetFilteredAsync(DeviceFilterDto filter);
+
         // The core reception action
         Task<ServiceResult<MaintenanceRequestDto>> ReceiveDeviceAsync(CreateMaintenanceRequestDto dto);
+
+
+         Task<ServiceResult<bool>> AssignToTechnicianAsync(AssignDeviceDto dto);
 
         // Mappers
         MaintenanceRequestDto ToDto(MaintenanceRequest request);
