@@ -40,18 +40,42 @@
             </div>
 
             <div class="px-3 mb-2 text-muted small fw-bold">العمليات اليومية</div>
+
+            @{if (User.IsInRole("Receptionest"))
+            {
             <a href="/Reception/Index" class="sidebar-link">➕ استلام جهاز جديد</a>
-            <a href="/Technician/Workspace" class="sidebar-link">🔬 فحص الأجهزة</a>
+            }}
 
-            <hr class="mx-3" />
+            @{
+                if (User.IsInRole("Technician"))
+                {
+                    <a href="/Technicians/Workspace" class="sidebar-link">🔬 فحص الأجهزة</a>
+                }}
 
+          
             <div class="px-3 mb-2 text-muted small fw-bold">لوحة الإدارة</div>
-            <a href="/Admin/Dashboard" class="sidebar-link">📋 صندوق الوارد (التوجيه)</a>
-            <a href="/Admin/Monitoring" class="sidebar-link">📊 المتابعة والتقارير</a>
-            <a href="/Admin/Users" class="sidebar-link">👥 إدارة المستخدمين</a>
-            <a href="/Admin/Workshops" class="sidebar-link">🏢 إدارة الورش</a>
-            <a href="/Admin/SpareParts" class="sidebar-link">⚙️ قطع الغيار</a>
-            <a href="/Admin/MaintenanceServices" class="sidebar-link">🛠️ خدمات الصيانة</a>
+
+            @{
+                if (User.IsInRole("Technician") || User.IsInRole("Admin"))
+                {
+                    <a href="/Admin/Monitoring" class="sidebar-link">📊 المتابعة والتقارير</a>
+
+                }
+            }
+
+
+
+                    @{
+                        if (User.IsInRole("Admin"))
+                        {
+                            <hr class="mx-3" />
+                            <a href="/Admin/Dashboard" class="sidebar-link">📋 صندوق الوارد (التوجيه)</a>
+                            <a href="/Admin/Users" class="sidebar-link">👥 إدارة المستخدمين</a>
+                            <a href="/Admin/Workshops" class="sidebar-link">🏢 إدارة الورش</a>
+                            <a href="/Admin/SpareParts" class="sidebar-link">⚙️ قطع الغيار</a>
+                            <a href="/Admin/MaintenanceServices" class="sidebar-link">🛠️ خدمات الصيانة</a>
+                        }
+                    }
         </nav>
 
         <div class="main-content">

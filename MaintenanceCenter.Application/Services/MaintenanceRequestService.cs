@@ -202,5 +202,73 @@ namespace MaintenanceCenter.Application.Services
 
             return ServiceResult<bool>.Success(true, "تم توجيه الجهاز للفني بنجاح.");
         }
+
+        public async Task<ServiceResult<bool>> SubmitInspectionAsync(SubmitInspectionDto dto, string technicianId)
+        {
+            // 1. Fetch request AND Include existing collections so we can overwrite them
+            var request = await _uow.MaintenanceRequests.GetQueryable()
+                .Include(r => r.SpareParts)
+                .Include(r => r.Services)
+                .FirstOrDefaultAsync(r => r.Id == dto.RequestId);
+
+            if (request == null) return ServiceResult<bool>.Failure("الطلب غير موجود.");
+
+            if (request.TechnicianId != technicianId)
+                return ServiceResult<bool>.Failure("غير مصرح لك بفحص هذا الجهاز.");
+
+            // 2. Clear old data (Because this is a living document, we rebuild the lists)
+            request.SpareParts.Clear();
+            request.Services.Clear();
+
+            // 3. Update basic details
+            request.TechnicalReport = dto.TechnicalReport;
+            request.Status = dto.Status; // Tech dictates the new status
+            request.TotalCost = dto.TotalCost; // Tech dictates the final cost!
+
+            if (dto.IsRepairable)
+            {
+                // 4. Rebuild Spare Parts & Snapshot Prices
+                if (dto.SelectedParts != null && dto.SelectedParts.Any())
+                {
+                    foreach (var partDto in dto.SelectedParts)
+                    {
+                        var catalogPart = await _uow.SpareParts.GetByIdAsync(partDto.SparePartId);
+                        if (catalogPart != null)
+                        {
+                            request.SpareParts.Add(new RequestSparePart
+                            {
+                                SparePartId = catalogPart.Id,
+                                Quantity = partDto.Quantity,
+                                UnitPriceSnapshot = catalogPart.CurrentCost
+                            });
+                        }
+                    }
+                }
+
+                // 5. Rebuild Maintenance Services & Snapshot Prices
+                if (dto.SelectedServices != null && dto.SelectedServices.Any())
+                {
+                    foreach (var serviceId in dto.SelectedServices)
+                    {
+                        var catalogService = await _uow.MaintenanceServices.GetByIdAsync(serviceId);
+                        if (catalogService != null)
+                        {
+                            request.Services.Add(new RequestService
+                            {
+                                MaintenanceServiceId = catalogService.Id,
+                                PriceSnapshot = catalogService.CurrentCost
+                            });
+                        }
+                    }
+                }
+            }
+
+            _uow.MaintenanceRequests.Update(request);
+            var saved = await _uow.CompleteAsync();
+
+            if (saved <= 0) return ServiceResult<bool>.Failure("حدث خطأ أثناء حفظ المقايسة.");
+
+            return ServiceResult<bool>.Success(true, "تم حفظ بيانات الفحص بنجاح.");
+        }
     }
 }  

@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         window.location.href = '/Admin/Dashboard'; // Will build this next
                         break;
                     case 'Technician':
-                        window.location.href = '/Technician/Workspace'; // Will build this next
+                        window.location.href = '/Technicians/Workspace'; // Will build this next
                         break;
                     case 'Receptionist':
                     default:

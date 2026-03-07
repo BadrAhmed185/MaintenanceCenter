@@ -30,6 +30,10 @@ namespace MaintenanceCenter.Application.DTOs.Technicians
         [Required(ErrorMessage = "يجب تحديد الورشة التي يتبع لها الفني.")]
         [Range(1, int.MaxValue, ErrorMessage = "يرجى اختيار ورشة صحيحة.")]
         public int WorkshopId { get; set; }
+
+
+        [Required(ErrorMessage ="دور المستخدم مطلوب")]
+        public string Role { get; set; }
     }
 
     public class UpdateTechnicianDto

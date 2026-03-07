@@ -1,0 +1,137 @@
+﻿@{
+    ViewData["Title"] = "مساحة عمل الفني";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3 class="fw-bold text-mis-blue">🔬 مساحة عمل الفني (الأجهزة المسندة)</h3>
+</div>
+
+<div class="card shadow-sm border-0 mb-4">
+    <div class="card-body">
+        <form id="techFilterForm" class="row g-3">
+            <div class="col-md-5">
+                <input type="text" id="SearchTerm" class="form-control" placeholder="ابحث بكود الجهاز أو الاسم...">
+            </div>
+            <div class="col-md-4">
+                <select id="StatusFilter" class="form-select">
+                    <option value="">-- كل الحالات --</option>
+                    <option value="1">🟡 تحت الفحص (جديد)</option>
+                    <option value="2">🟣 المقايسة جاهزة</option>
+                    <option value="3">🟠 جاري التصليح</option>
+                    <option value="4">🟢 جاهز للاستلام</option>
+                </select>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-mis-blue text-white">
+                    <tr>
+                        <th>الكود</th>
+                        <th>الجهاز</th>
+                        <th>تاريخ الاستلام</th>
+                        <th>الحالة</th>
+                        <th class="text-center">الإجراء</th>
+                    </tr>
+                </thead>
+                <tbody id="techTableBody">
+                    <tr><td colspan="5" class="text-center py-5">جاري التحميل...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="inspectionModal" tabindex="-1" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title fw-bold text-mis-blue">📝 تقرير الفحص والمقايسة</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="inspectionForm">
+                <div class="modal-body">
+                    <input type="hidden" id="RequestId">
+
+                    <div class="alert alert-secondary py-2 mb-3">
+                        <span class="fw-bold">كود الجهاز:</span> <span id="displayCode" class="ms-2"></span>
+                        <br>
+                        <span class="fw-bold">وصف العطل الأساسي:</span> <span id="displayFault" class="ms-2 text-danger"></span>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">حالة الجهاز الفعلية <span class="text-danger">*</span></label>
+                            <select id="NextStatus" class="form-select" required>
+                                <option value="1">تحت الفحص (حفظ كمسودة)</option>
+                                <option value="2">المقايسة جاهزة (انتظار موافقة/دفع)</option>
+                                <option value="3">جاري التصليح (بدء العمل)</option>
+                                <option value="4">جاهز للاستلام (تم الانتهاء)</option>
+                                <option value="6">غير قابل للإصلاح (تالف كلياً)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">التقرير الفني وملاحظات الفحص <span class="text-danger">*</span></label>
+                        <textarea id="TechnicalReport" class="form-control" rows="3" required placeholder="اشرح ما تم اكتشافه من أعطال..."></textarea>
+                    </div>
+
+                    <div id="pricingSection">
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">إضافة قطع غيار</label>
+                                <div class="input-group">
+                                    <select id="PartSelect" class="form-select">
+                                        <option value="">-- اختر القطعة --</option>
+                                    </select>
+                                    <input type="number" id="PartQty" class="form-control" placeholder="الكمية" min="1" value="1" style="max-width: 80px;">
+                                    <button type="button" class="btn btn-outline-primary" id="addPartBtn">إضافة</button>
+                                </div>
+                                <ul id="selectedPartsList" class="list-group mt-2 small"></ul>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">إضافة خدمات صيانة</label>
+                                <div class="input-group">
+                                    <select id="ServiceSelect" class="form-select">
+                                        <option value="">-- اختر الخدمة --</option>
+                                    </select>
+                                    <button type="button" class="btn btn-outline-primary" id="addServiceBtn">إضافة</button>
+                                </div>
+                                <ul id="selectedServicesList" class="list-group mt-2 small"></ul>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="row align-items-center bg-light p-3 rounded border">
+                            <div class="col-md-6">
+                                <span class="text-muted small">إجمالي التكلفة المحسوبة آلياً: </span>
+                                <span id="calculatedSum" class="fw-bold">0</span> <span class="text-muted small">ج.م</span>
+                                <button type="button" class="btn btn-sm btn-link p-0 ms-2" id="copySumBtn">استخدام هذا المبلغ</button>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold text-primary mb-0">التكلفة النهائية المطلوبة (ج.م) <span class="text-danger">*</span></label>
+                                <input type="number" id="TotalCostOverride" class="form-control form-control-lg text-primary fw-bold" required min="0" step="0.5">
+                                <small class="text-muted">هذا هو المبلغ الذي سيتم طلبه من الجهة.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">إغلاق</button>
+                    <button type="submit" id="saveBtn" class="btn btn-mis px-5">💾 حفظ البيانات والتحديث</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/views/technician/workspace.js"></script>
+}

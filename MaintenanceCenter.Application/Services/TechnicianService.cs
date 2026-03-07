@@ -83,6 +83,9 @@ namespace MaintenanceCenter.Application.Services
                 return ServiceResult<TechnicianDto>.Failure(errors);
             }
 
+            // Assign the role to the newly created user
+            await _userManager.AddToRoleAsync(technician, dto.Role);
+
             // Optional: Assign to a role, e.g., await _userManager.AddToRoleAsync(technician, "Technician");
 
             // Re-fetch to include the Workshop name for the DTO

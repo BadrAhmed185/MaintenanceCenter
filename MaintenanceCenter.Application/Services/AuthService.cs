@@ -42,7 +42,7 @@ namespace MaintenanceCenter.Application.Services
             var roles = await _userManager.GetRolesAsync(user);
             var primaryRole = roles.FirstOrDefault() ?? "Receptionist"; // Default fallback
 
-            var token = _tokenService.GenerateToken(user);
+            var token = _tokenService.GenerateToken(user, roles);
 
             var responseData = new AuthResponseDto
             {

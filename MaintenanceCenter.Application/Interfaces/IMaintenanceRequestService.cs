@@ -17,6 +17,8 @@ namespace MaintenanceCenter.Application.Interfaces
 
          Task<ServiceResult<bool>> AssignToTechnicianAsync(AssignDeviceDto dto);
 
+        Task<ServiceResult<bool>> SubmitInspectionAsync(SubmitInspectionDto dto, string technicianId);
+
         // Mappers
         MaintenanceRequestDto ToDto(MaintenanceRequest request);
         MaintenanceRequest FromDto(CreateMaintenanceRequestDto dto);

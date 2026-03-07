@@ -1,8 +1,9 @@
 ﻿using MaintenanceCenter.Application.DTOs.MaintenanceRequests;
 using MaintenanceCenter.Application.Interfaces;
+using MaintenanceCenter.Web.Controllers.Api;
+using MaintenanceCenter.Web.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MaintenanceCenter.Web.Controllers.Api;
 
 namespace MaintenanceCenter.Web.Controllers.Api
 {
@@ -10,10 +11,12 @@ namespace MaintenanceCenter.Web.Controllers.Api
     public class MaintenanceRequestsController : BaseApiController
     {
         private readonly IMaintenanceRequestService _requestService;
+        private readonly ICurrentUserService _currentUserService;
 
-        public MaintenanceRequestsController(IMaintenanceRequestService requestService)
+        public MaintenanceRequestsController(IMaintenanceRequestService requestService, ICurrentUserService currentUserService)
         {
             _requestService = requestService;
+            _currentUserService = currentUserService;
         }
 
         [HttpGet]
@@ -34,6 +37,11 @@ namespace MaintenanceCenter.Web.Controllers.Api
         [HttpGet("filter")]
         public async Task<ActionResult> GetFiltered([FromQuery] DeviceFilterDto filter)
         {
+            // SECURITY OVERRIDE: If the user is a Technician, lock the filter to their ID.
+            if (User.IsInRole("Technician"))
+            {
+                filter.TechnicianId = _currentUserService.UserId;
+            }
             var result = await _requestService.GetFilteredAsync(filter);
             return HandleResult(result);
         }
@@ -53,6 +61,21 @@ namespace MaintenanceCenter.Web.Controllers.Api
             if (!TryValidate(out var error)) return error!;
 
             var result = await _requestService.AssignToTechnicianAsync(dto);
+            return HandleResult(result);
+        }
+
+        [HttpPost("inspect")]
+        [Authorize(Roles = "Technician")] // Ensure only technicians can do this
+     
+        public async Task<ActionResult> SubmitInspection([FromBody] SubmitInspectionDto dto)
+        {
+            if (!TryValidate(out var error)) return error!;
+
+            var userId = _currentUserService.UserId;
+            if (string.IsNullOrEmpty(userId))
+                return Unauthorized(new { message = "تعذر التحقق من هوية الفني." });
+
+            var result = await _requestService.SubmitInspectionAsync(dto, userId);
             return HandleResult(result);
         }
     }

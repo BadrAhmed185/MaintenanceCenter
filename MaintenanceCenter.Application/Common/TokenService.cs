@@ -15,21 +15,25 @@ namespace MaintenanceCenter.Application.Common
             _jwtSettings = jwtSettings;
         }
 
-        public string GenerateToken(ApplicationUser user)
+        public string GenerateToken(ApplicationUser user, IList<string> roles)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SecretKey));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var claims = new List<Claim>
             {
-                // The claim of User Public Key can be added if needed
                 new Claim(ClaimTypes.Name, user.UserName),
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
                 new Claim("Name", user.DisplayName),
                 new Claim("NameIdentifier", user.Id),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-               // new Claim("UserPublicKey", user.PublicKey)
             };
+
+            // Embed each role as a ClaimTypes.Role claim so [Authorize(Roles = "...")] works
+            foreach (var role in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
 
             var token = new JwtSecurityToken(
                 issuer: _jwtSettings.ValidIssuer,
@@ -39,7 +43,7 @@ namespace MaintenanceCenter.Application.Common
                 signingCredentials: creds
             );
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
+              return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 

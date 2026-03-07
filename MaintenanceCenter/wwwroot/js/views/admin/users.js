@@ -57,12 +57,22 @@
         }
     });
 
+
     userForm.addEventListener('submit', async function (e) {
         e.preventDefault();
 
         const role = roleSelect.value;
         const btn = document.getElementById('saveUserBtn');
         btn.disabled = true;
+
+        const password = document.getElementById('Password').value;
+        const confirmPassword = document.getElementById('ConfirmPassword').value;
+        console.log('confirmPassword:', confirmPassword);   
+        if (password !== confirmPassword) {
+            Swal.fire('خطأ', 'كلمة المرور وتأكيدها غير متطابقين', 'error');
+            btn.disabled = false;
+            return;
+        }
 
         try {
             let response;
@@ -72,8 +82,11 @@
                     displayName: document.getElementById('DisplayName').value,
                     userName: document.getElementById('UserName').value,
                     password: document.getElementById('Password').value,
-                    workshopId: parseInt(workshopSelect.value)
+                    workshopId: parseInt(workshopSelect.value),
+                    role: role
+
                 };
+                console.log('Submitting Technician data:', data); // Debug log
                 response = await ApiClient.post('/technicians', data); // Uses Technicians API
             } else {
                 const data = {
@@ -82,6 +95,7 @@
                     password: document.getElementById('Password').value,
                     role: role
                 };
+                console.log('Submitting User data:', data); // Debug log
                 response = await ApiClient.post('/auth/register', data); // Uses generic Auth API
             }
 

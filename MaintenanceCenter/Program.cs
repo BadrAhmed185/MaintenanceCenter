@@ -82,11 +82,19 @@ namespace MaintenanceCenter
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            // After .AddDefaultTokenProviders(), add this:
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                // This prevents Identity from hijacking the default scheme
+                options.LoginPath = "/Auth/Login";
+            });
+
             // 2. Configure JWT Authentication to read from the cookie
             builder.Services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme; // Prevent Identity from overriding JWT as the default scheme
             })
             .AddJwtBearer(options =>
             {
@@ -98,6 +106,8 @@ namespace MaintenanceCenter
                 }
 
                 options.SaveToken = true;
+
+                /// important to change in prod
                 options.RequireHttpsMetadata = true;
 
                 options.TokenValidationParameters = new TokenValidationParameters
@@ -106,8 +116,8 @@ namespace MaintenanceCenter
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecretKey)),
 
                     // UNCOMMENTED AND CONFIGURED:
-                    ValidateIssuer = false,
-                   // ValidIssuer = jwtSettings.ValidIssuer,
+                    ValidateIssuer = true,
+                    ValidIssuer = jwtSettings.ValidIssuer,
 
                     ValidateAudience = false,
                    // ValidAudience = jwtSettings.ValidAudience,
@@ -194,13 +204,14 @@ namespace MaintenanceCenter
 
             }
 
-      //      app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
             // ... down in the pipeline ...
             app.UseStaticFiles(); // Required to serve CSS, JS, Images from wwwroot
             app.UseRouting();
-            app.UseMiddleware<GlobalExceptionMiddleware>();
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseMiddleware<GlobalExceptionMiddleware>();
+
 
             // Map both API and MVC routes
             app.MapControllers();
