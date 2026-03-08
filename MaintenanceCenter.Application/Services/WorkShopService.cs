@@ -2,16 +2,19 @@
 using MaintenanceCenter.Application.DTOs.Workshops;
 using MaintenanceCenter.Application.Interfaces;
 using MaintenanceCenter.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace MaintenanceCenter.Application.Services
 {
     public class WorkshopService : IWorkshopService
     {
         private readonly IUnitOfWork _uow;
+        private readonly ICurrentUserService _currentUserService;
 
-        public WorkshopService(IUnitOfWork uow)
+        public WorkshopService(IUnitOfWork uow, ICurrentUserService currentUserService)
         {
             _uow = uow;
+            _currentUserService = currentUserService;
         }
 
         // --- Mappers ---
@@ -52,9 +55,21 @@ namespace MaintenanceCenter.Application.Services
 
         public async Task<ServiceResult<WorkshopDto>> GetByIdAsync(int id)
         {
-            var workshop = await _uow.Workshops.GetByIdAsync(id);
+            var workshop = await _uow.Workshops.GetQueryable().Include(w => w.Technicians).FirstOrDefaultAsync(w => w.Id == id);
             if (workshop == null)
                 return ServiceResult<WorkshopDto>.Failure("Workshop not found.");
+
+            // Check if the user is technician that it is its workshop
+            if (_currentUserService.userRole == "Technician")
+            {
+                var isMemberOfWorkShop = workshop.Technicians
+                    .Any(t => t.Id == _currentUserService.UserId);
+
+                if (!isMemberOfWorkShop)
+                    return ServiceResult<WorkshopDto>.Failure("You are not a member of this workshop.");
+            }
+
+
 
             return ServiceResult<WorkshopDto>.Success(ToDto(workshop));
         }

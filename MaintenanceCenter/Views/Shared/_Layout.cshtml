@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 
     <style>
         body {
@@ -39,25 +40,34 @@
                 <small class="text-muted">نظام الإدارة الإلكتروني</small>
             </div>
 
-            <div class="px-3 mb-2 text-muted small fw-bold">العمليات اليومية</div>
 
-            @{if (User.IsInRole("Receptionest"))
+            @{
+                if (User.IsInRole("Receptionist"))
             {
+                    <div class="px-3 mb-2 text-muted small fw-bold">العمليات اليومية</div>
+
             <a href="/Reception/Index" class="sidebar-link">➕ استلام جهاز جديد</a>
             }}
 
             @{
                 if (User.IsInRole("Technician"))
                 {
+                    <div class="px-3 mb-2 text-muted small fw-bold">العمليات اليومية</div>
+
                     <a href="/Technicians/Workspace" class="sidebar-link">🔬 فحص الأجهزة</a>
                 }}
 
-          
-            <div class="px-3 mb-2 text-muted small fw-bold">لوحة الإدارة</div>
+
+
 
             @{
-                if (User.IsInRole("Technician") || User.IsInRole("Admin"))
+                if (User.IsInRole("Technician") && true)
                 {
+
+                        <hr class="mx-3" />
+                    
+
+                    <div class="px-3 mb-2 text-muted small fw-bold">لوحة الإدارة</div>
                     <a href="/Admin/Monitoring" class="sidebar-link">📊 المتابعة والتقارير</a>
 
                 }
@@ -68,8 +78,11 @@
                     @{
                         if (User.IsInRole("Admin"))
                         {
-                            <hr class="mx-3" />
-                            <a href="/Admin/Dashboard" class="sidebar-link">📋 صندوق الوارد (التوجيه)</a>
+
+                    <div class="px-3 mb-2 text-muted small fw-bold">لوحة الإدارة</div>
+                    <a href="/Admin/Dashboard" class="sidebar-link">📋 صندوق الوارد (التوجيه)</a>
+
+                    <a href="/Admin/Monitoring" class="sidebar-link">📊 المتابعة والتقارير</a>
                             <a href="/Admin/Users" class="sidebar-link">👥 إدارة المستخدمين</a>
                             <a href="/Admin/Workshops" class="sidebar-link">🏢 إدارة الورش</a>
                             <a href="/Admin/SpareParts" class="sidebar-link">⚙️ قطع الغيار</a>
@@ -81,8 +94,8 @@
         <div class="main-content">
             <header class="header">
                 <div>
-                    <span class="fw-bold">مرحباً، <span id="currentUserLabel">أحمد (استقبال)</span></span>
-                    <button class="btn btn-sm btn-outline-danger ms-3">تسجيل خروج</button>
+                    <span class="fw-bold">مرحبآ :  @User.FindFirst("Name")?.Value<span id="currentUserLabel"></span></span>
+                    <a style="text-decoration: none;" href="~/Auth/Logout" class="btn btn-sm btn-outline-danger ms-3">تسجيل خروج</a>
                 </div>
                 <div>
                     <span class="fw-bold text-mis-blue">جامعة أسيوط | MIS</span>

@@ -75,6 +75,10 @@ namespace MaintenanceCenter.Application.DTOs.MaintenanceRequests
         // Pagination to prevent browser crashing with large data
         public int PageNumber { get; set; } = 1;
         public int PageSize { get; set; } = 50;
+
+
+        // new prop :  OrderDescending ? 
+        public bool OrderDescending { get; set; } = true;
     }
 
 

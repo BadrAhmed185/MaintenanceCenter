@@ -1,5 +1,6 @@
 ﻿using MaintenanceCenter.Application.DTOs.Auth;
 using MaintenanceCenter.Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MaintenanceCenter.Web.Controllers.Api
@@ -49,6 +50,7 @@ namespace MaintenanceCenter.Web.Controllers.Api
         [HttpPost("register")]
         // Note: In production, you would decorate this with [Authorize(Roles = "Admin")]
         // But leave it anonymous for now so you can create your first accounts!
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Register([FromBody] RegisterDto dto)
         {
             if (!TryValidate(out var error)) return error!;
@@ -68,7 +70,7 @@ namespace MaintenanceCenter.Web.Controllers.Api
 
 
         [HttpGet("users")]
-        // [Authorize(Roles = "Admin")]
+         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> GetAllUsers()
         {
             var result = await _authService.GetAllUsersAsync();

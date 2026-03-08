@@ -34,8 +34,54 @@
             <div class="card-header bg-mis-blue text-white fw-bold">بيانات الجهة المسلمة</div>
             <div class="card-body bg-white">
                 <div class="mb-3">
+                    @* <label class="form-label fw-bold">الجهة القادم منها الجهاز (الكلية/القسم) <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="ClientEntityName" placeholder="مثال: كلية العلوم - قسم النبات" required> *@
+
+
                     <label class="form-label fw-bold">الجهة القادم منها الجهاز (الكلية/القسم) <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="ClientEntityName" placeholder="مثال: كلية العلوم - قسم النبات" required>
+                    <select class="form-select" id="ClientEntityName" name="ClientEntityName">
+                    
+                        <option value="" disabled selected>مثال: كلية العلوم</option>
+                            <option value="كلية الطب">كلية الطب</option>
+                            <option value="كلية طب الأسنان">كلية طب الأسنان</option>
+                            <option value="كلية الصيدلة">كلية الصيدلة</option>
+                            <option value="كلية التمريض">كلية التمريض</option>
+                            <option value="كلية الطب البيطري">كلية الطب البيطري</option>
+                            <option value="كلية الهندسة">كلية الهندسة</option>
+                            <option value="كلية الحاسبات والمعلومات">كلية الحاسبات والمعلومات</option>
+                            <option value="كلية الذكاء الاصطناعي">كلية الذكاء الاصطناعي</option>
+                            <option value="كلية العلوم">كلية العلوم</option>
+                            <option value="كلية الزراعة">كلية الزراعة</option>
+                            <option value="كلية التجارة">كلية التجارة</option>
+                            <option value="كلية الحقوق">كلية الحقوق</option>
+                            <option value="كلية الآداب">كلية الآداب</option>
+                            <option value="كلية التربية">كلية التربية</option>
+                            <option value="كلية التربية النوعية">كلية التربية النوعية</option>
+                            <option value="كلية التربية الرياضية">كلية التربية الرياضية</option>
+                            <option value="كلية التربية للطفولة المبكرة">كلية التربية للطفولة المبكرة</option>
+                            <option value="كلية الإعلام">كلية الإعلام</option>
+                            <option value="كلية الألسن">كلية الألسن</option>
+                            <option value="كلية الاقتصاد والعلوم السياسية">كلية الاقتصاد والعلوم السياسية</option>
+                            <option value="كلية الفنون الجميلة">كلية الفنون الجميلة</option>
+                            <option value="كلية الفنون التطبيقية">كلية الفنون التطبيقية</option>
+                            <option value="كلية التخطيط العمراني">كلية التخطيط العمراني</option>
+                            <option value="كلية الآثار">كلية الآثار</option>
+                            <option value="كلية السياحة والفنادق">كلية السياحة والفنادق</option>
+                            <option value="كلية الخدمة الاجتماعية">كلية الخدمة الاجتماعية</option>
+                            <option value="كلية الدراسات الإسلامية والعربية">كلية الدراسات الإسلامية والعربية</option>
+                            <option value="كلية العلوم الطبية التطبيقية">كلية العلوم الطبية التطبيقية</option>
+                            <option value="كلية تكنولوجيا العلوم الصحية">كلية تكنولوجيا العلوم الصحية</option>
+                            <option value="كلية التعليم الصناعي">كلية التعليم الصناعي</option>
+                            <option value="كلية التكنولوجيا والتنمية">كلية التكنولوجيا والتنمية</option>
+                            <option value="كلية نظم المعلومات وعلوم الحاسب">كلية نظم المعلومات وعلوم الحاسب</option>
+                            <option value="كلية الثروة السمكية">كلية الثروة السمكية</option>
+                            <option value="كلية علوم الملاحة وتكنولوجيا الفضاء">كلية علوم الملاحة وتكنولوجيا الفضاء</option>
+                            <option value="كلية الإنذار المبكر وتغير المناخ">كلية الإنذار المبكر وتغير المناخ</option>
+                            <option value="كلية اللغات والترجمة">كلية اللغات والترجمة</option>
+                            <option value="كلية الدراسات العليا للعلوم المتقدمة">كلية الدراسات العليا للعلوم المتقدمة</option>
+                            <option value="كلية العلاج الطبيعي">كلية العلاج الطبيعي</option>
+                      
+                    </select>
                 </div>
                 <div class="mb-3">
                     <label class="form-label fw-bold">اسم الشخص المُسلّم <span class="text-danger">*</span></label>

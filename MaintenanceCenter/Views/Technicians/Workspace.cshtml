@@ -14,12 +14,17 @@
             </div>
             <div class="col-md-4">
                 <select id="StatusFilter" class="form-select">
-                    <option value="">-- كل الحالات --</option>
-                    <option value="1">🟡 تحت الفحص (جديد)</option>
-                    <option value="2">🟣 المقايسة جاهزة</option>
-                    <option value="3">🟠 جاري التصليح</option>
-                    <option value="4">🟢 جاهز للاستلام</option>
+                     <option value="">-- كل الحالات --</option> 
+                    <option value="1">🔵 تم الاستلام (بانتظار التوجيه)</option>        <!-- Received -->
+                    <option value="2" selected>🟡 تحت الفحص (لدى الفني)</option>                 <!-- UnderInspection -->
+                    <option value="3" >🟣 المقايسة جاهزة (بانتظار الدفع)</option>        <!-- QuotationReady -->
+                    <option value="4">🔴 رفض المقايسة</option>                          <!-- QuotationRejected -->
+                    <option value="5">⚫ غير قابل للإصلاح</option>                      <!-- Unrepairable -->
+                    <option value="6">🟠 جاري التصليح (تم الدفع)</option>              <!-- UnderRepair -->
+                    <option value="7">🟢 جاهز للاستلام</option>                        <!-- ReadyForDelivery -->
+                    <option value="8">⚪ تم التسليم (مغلق)</option>                     <!-- Delivered -->
                 </select>
+             
             </div>
         </form>
     </div>
@@ -67,11 +72,14 @@
                         <div class="col-md-6">
                             <label class="form-label fw-bold">حالة الجهاز الفعلية <span class="text-danger">*</span></label>
                             <select id="NextStatus" class="form-select" required>
-                                <option value="1">تحت الفحص (حفظ كمسودة)</option>
-                                <option value="2">المقايسة جاهزة (انتظار موافقة/دفع)</option>
-                                <option value="3">جاري التصليح (بدء العمل)</option>
-                                <option value="4">جاهز للاستلام (تم الانتهاء)</option>
-                                <option value="6">غير قابل للإصلاح (تالف كلياً)</option>
+                                <option value="1">🔵 تم الاستلام (بانتظار التوجيه)</option>        <!-- Received -->
+                                <option value="2" >🟡 تحت الفحص (لدى الفني)</option>                 <!-- UnderInspection -->
+                                <option value="3" selected>🟣 المقايسة جاهزة (بانتظار الدفع)</option>        <!-- QuotationReady -->
+                                <option value="4" >🔴 رفض المقايسة</option>                          <!-- QuotationRejected -->
+                                <option value="5">⚫ غير قابل للإصلاح</option>                      <!-- Unrepairable -->
+                                <option value="6">🟠 جاري التصليح (تم الدفع)</option>              <!-- UnderRepair -->
+                                <option value="7">🟢 جاهز للاستلام</option>                        <!-- ReadyForDelivery -->
+                                <option value="8">⚪ تم التسليم (مغلق)</option>                     <!-- Delivered -->
                             </select>
                         </div>
                     </div>

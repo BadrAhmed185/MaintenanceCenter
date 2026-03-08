@@ -88,6 +88,7 @@ namespace MaintenanceCenter.Application.Services
                 .Include(r => r.Workshop)
                 .Include(r => r.Technician)
                 .Include(r => r.Receptionist)
+           
                 .AsNoTracking(); // Optimization: We only want to read data, not track it for updates
 
             // 2. Dynamically apply filters
@@ -124,7 +125,10 @@ namespace MaintenanceCenter.Application.Services
             }
 
             // 3. Sorting (Newest devices first)
-            query = query.OrderByDescending(r => r.CreatedAt);
+            if (filter.OrderDescending)
+                query = query.OrderByDescending(r => r.CreatedAt);
+            else
+                query = query.OrderBy(r => r.CreatedAt);
 
             // 4. Pagination (Skip and Take)
             var skipAmount = (filter.PageNumber - 1) * filter.PageSize;

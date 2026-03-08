@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MaintenanceCenter.Web.Controllers.Api
 {
-    // [Authorize(Roles = "Admin")] // Uncomment when roles are seeded
+     [Authorize]
     public class WorkshopsController : BaseApiController
     {
         private readonly IWorkshopService _workshopService;
@@ -16,6 +16,8 @@ namespace MaintenanceCenter.Web.Controllers.Api
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
+
         public async Task<ActionResult> GetAll()
         {
             var result = await _workshopService.GetAllAsync();
@@ -23,6 +25,7 @@ namespace MaintenanceCenter.Web.Controllers.Api
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "Technician,Admin")]
         public async Task<ActionResult> GetById(int id)
         {
             var result = await _workshopService.GetByIdAsync(id);
@@ -30,6 +33,7 @@ namespace MaintenanceCenter.Web.Controllers.Api
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Create([FromBody] CreateWorkshopDto dto)
         {
             if (!TryValidate(out var error)) return error!;
@@ -39,6 +43,7 @@ namespace MaintenanceCenter.Web.Controllers.Api
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Update(int id, [FromBody] UpdateWorkshopDto dto)
         {
             if (!TryValidate(out var error)) return error!;
@@ -51,6 +56,7 @@ namespace MaintenanceCenter.Web.Controllers.Api
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Delete(int id)
         {
             var result = await _workshopService.DeleteAsync(id);

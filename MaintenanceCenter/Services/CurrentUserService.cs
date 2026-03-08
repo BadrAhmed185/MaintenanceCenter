@@ -17,6 +17,15 @@ namespace MaintenanceCenter.Web.Services
         }
 
         public string? UserId => _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
-        
+
+        public string? userRole
+        {
+            get
+            {
+                var roleClaim = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Role);
+                return roleClaim?.Value;
+            }
+
+        }
     }
 }

@@ -20,6 +20,7 @@ namespace MaintenanceCenter.Web.Controllers.Api
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")] 
         public async Task<ActionResult> GetAll()
         {
             var result = await _requestService.GetAllAsync();
@@ -47,6 +48,8 @@ namespace MaintenanceCenter.Web.Controllers.Api
         }
 
         [HttpPost("receive")]
+        [Authorize(Roles = "Receptionist")]
+
         public async Task<ActionResult> ReceiveDevice([FromBody] CreateMaintenanceRequestDto dto)
         {
             if (!TryValidate(out var error)) return error!;
@@ -56,6 +59,7 @@ namespace MaintenanceCenter.Web.Controllers.Api
         }
 
         [HttpPost("assign")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> AssignDevice([FromBody] AssignDeviceDto dto)
         {
             if (!TryValidate(out var error)) return error!;

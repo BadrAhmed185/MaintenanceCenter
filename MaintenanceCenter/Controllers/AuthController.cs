@@ -17,5 +17,11 @@ namespace MaintenanceCenter.Web.Controllers.Mvc
 
             return View();
         }
+        [HttpGet("Logout")]
+        public IActionResult Logout()
+        {
+            Response.Cookies.Delete("jwt");
+            return View("Login");
+        }
     }
 }

@@ -24,6 +24,7 @@ namespace MaintenanceCenter.Web.Controllers.Mvc
 
 
         [HttpGet("Monitoring")]
+        [Authorize(Roles = "Admin , Technician")]
         public IActionResult Monitoring() => View();
     }
 }

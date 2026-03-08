@@ -22,12 +22,14 @@
                 <label class="form-label small fw-bold">حالة الجهاز</label>
                 <select id="Status" class="form-select">
                     <option value="">-- كل الحالات --</option>
-                    <option value="0">🔵 تم الاستلام (بانتظار التوجيه)</option>
-                    <option value="1">🟡 تحت الفحص (لدى الفني)</option>
-                    <option value="2">🟣 المقايسة جاهزة (بانتظار الدفع)</option>
-                    <option value="3">🟠 جاري التصليح (تم الدفع)</option>
-                    <option value="4">🟢 جاهز للاستلام</option>
-                    <option value="5">⚪ تم التسليم (مغلق)</option>
+                    <option value="1">🔵 تم الاستلام (بانتظار التوجيه)</option>        <!-- Received -->
+                    <option value="2">🟡 تحت الفحص (لدى الفني)</option>                 <!-- UnderInspection -->
+                    <option value="3">🟣 المقايسة جاهزة (بانتظار الدفع)</option>        <!-- QuotationReady -->
+                    <option value="4">🔴 رفض المقايسة</option>                          <!-- QuotationRejected -->
+                    <option value="5">⚫ غير قابل للإصلاح</option>                      <!-- Unrepairable -->
+                    <option value="6">🟠 جاري التصليح (تم الدفع)</option>              <!-- UnderRepair -->
+                    <option value="7">🟢 جاهز للاستلام</option>                        <!-- ReadyForDelivery -->
+                    <option value="8">⚪ تم التسليم (مغلق)</option>                     <!-- Delivered -->
                 </select>
             </div>
 

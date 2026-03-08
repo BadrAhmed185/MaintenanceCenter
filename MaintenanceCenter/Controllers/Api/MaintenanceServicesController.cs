@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MaintenanceCenter.Web.Controllers.Api
 {
-    // [Authorize(Roles = "Admin")] 
+    [Authorize]
     public class MaintenanceServicesController : BaseApiController
     {
         private readonly IMaintenanceService _maintenanceServices;
@@ -17,6 +17,7 @@ namespace MaintenanceCenter.Web.Controllers.Api
         }
 
         [HttpGet]
+ 
         public async Task<ActionResult> GetAll()
         {
             var result = await _maintenanceServices.GetAllAsync();
@@ -24,6 +25,7 @@ namespace MaintenanceCenter.Web.Controllers.Api
         }
 
         [HttpGet("{id}")]
+
         public async Task<ActionResult> GetById(int id)
         {
             var result = await _maintenanceServices.GetByIdAsync(id);
@@ -31,6 +33,8 @@ namespace MaintenanceCenter.Web.Controllers.Api
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
+
         public async Task<ActionResult> Create([FromBody] CreateMaintenanceServiceDto dto)
         {
             if (!TryValidate(out var error)) return error!;
@@ -40,6 +44,8 @@ namespace MaintenanceCenter.Web.Controllers.Api
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
+
         public async Task<ActionResult> Update(int id, [FromBody] UpdateMaintenanceServiceDto dto)
         {
             if (!TryValidate(out var error)) return error!;
@@ -52,6 +58,8 @@ namespace MaintenanceCenter.Web.Controllers.Api
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
+
         public async Task<ActionResult> Delete(int id)
         {
             var result = await _maintenanceServices.DeleteAsync(id);

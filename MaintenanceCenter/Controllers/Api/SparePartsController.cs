@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MaintenanceCenter.Web.Controllers.Api
 {
-    // [Authorize(Roles = "Admin")] 
+     [Authorize] 
     public class SparePartsController : BaseApiController
     {
         private readonly ISparePartService _sparePartService;
@@ -16,6 +16,7 @@ namespace MaintenanceCenter.Web.Controllers.Api
         }
 
         [HttpGet]
+   
         public async Task<ActionResult> GetAll()
         {
             var result = await _sparePartService.GetAllAsync();
@@ -23,6 +24,7 @@ namespace MaintenanceCenter.Web.Controllers.Api
         }
 
         [HttpGet("{id}")]
+     
         public async Task<ActionResult> GetById(int id)
         {
             var result = await _sparePartService.GetByIdAsync(id);
@@ -30,6 +32,8 @@ namespace MaintenanceCenter.Web.Controllers.Api
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
+
         public async Task<ActionResult> Create([FromBody] CreateSparePartDto dto)
         {
             if (!TryValidate(out var error)) return error!;
@@ -39,6 +43,8 @@ namespace MaintenanceCenter.Web.Controllers.Api
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
+
         public async Task<ActionResult> Update(int id, [FromBody] UpdateSparePartDto dto)
         {
             if (!TryValidate(out var error)) return error!;
@@ -51,6 +57,8 @@ namespace MaintenanceCenter.Web.Controllers.Api
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
+
         public async Task<ActionResult> Delete(int id)
         {
             var result = await _sparePartService.DeleteAsync(id);

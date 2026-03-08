@@ -71,12 +71,11 @@
 
         tableBody.innerHTML = requests.map(req => {
             const dateStr = new Date(req.createdAt).toLocaleDateString('ar-EG');
-            let badge = req.status === 1 ? `<span class="badge bg-warning text-dark">تحت الفحص</span>` :
-                req.status === 2 ? `<span class="badge bg-purple" style="background-color:#6f42c1; color:white;">المقايسة جاهزة</span>` :
-                    `<span class="badge bg-secondary">حالة ${req.status}</span>`;
+            let badge = getStatusBadge(req.status); 
 
             // Stringify req so we can pass it to the modal
             const reqJson = encodeURIComponent(JSON.stringify(req));
+
 
             return `
                 <tr>
@@ -202,6 +201,30 @@
             btn.disabled = false;
         }
     });
+
+    function getStatusBadge(statusInt) {
+        switch (statusInt) {
+            case 1: // Received
+                return `<span class="badge bg-primary px-3 py-2">تم الاستلام</span>`;
+            case 2: // UnderInspection
+                return `<span class="badge bg-warning text-dark px-3 py-2">تحت الفحص</span>`;
+            case 3: // QuotationReady
+                return `<span class="badge" style="background-color: #6f42c1; color: white;">المقايسة جاهزة</span>`;
+            case 4: // QuotationRejected
+                return `<span class="badge bg-danger px-3 py-2">رفض المقايسة</span>`;
+            case 5: // Unrepairable
+                return `<span class="badge bg-dark px-3 py-2">غير قابل للإصلاح</span>`;
+            case 6: // UnderRepair
+                return `<span class="badge bg-info text-dark px-3 py-2">جاري التصليح</span>`;
+            case 7: // ReadyForDelivery
+                return `<span class="badge bg-success px-3 py-2">جاهز للاستلام</span>`;
+            case 8: // Delivered
+                return `<span class="badge bg-secondary px-3 py-2">تم التسليم</span>`;
+            default:
+                return `<span class="badge bg-secondary px-3 py-2">مجهول</span>`;
+        }
+    }
+
 
     init();
 });

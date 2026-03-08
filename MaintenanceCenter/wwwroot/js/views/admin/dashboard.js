@@ -13,6 +13,9 @@
     // State to hold technicians so we can filter them locally without extra API calls
     let allTechnicians = [];
 
+    // Hanling the order od sorting (desc by default)
+    let isOrderDescending = true;
+
     // 1. Initialize Page
     async function init() {
         await loadInbox();
@@ -20,10 +23,15 @@
     }
 
     // 2. Load "Received" Devices (Status = 0)
-    async function loadInbox() {
+    async function loadInbox(ordedrDescending) {
         try {
+
+            console.log("Loading inbox with orderDescending =", ordedrDescending);
+
+            if (!ordedrDescending)
+                ordedrDescending = false;
             // Using our query engine endpoint from Phase A
-            const response = await ApiClient.get('/maintenancerequests/filter?status=1');
+            const response = await ApiClient.get(`/maintenancerequests/filter?status=1&orderDescending=${ordedrDescending}`);
 
             if (response && response.succeeded) {
                 renderTable(response.data);
@@ -170,6 +178,29 @@
             assignSubmitBtn.innerHTML = originalBtnText;
         }
     });
+
+    // 8. Handle Sorting Toggle
+    async function setupSortingToggle() {
+        if (isOrderDescending) {
+           await loadInbox(true);
+                sortBtn.style.backgroundColor = '#003366';
+                sortBtn.innerHTML = 'ترتيب من الأقدم للأحدث 🔼';
+        } else {
+         await loadInbox(false);
+            sortBtn.innerHTML = 'ترتيب من الأحدث للأقدم 🔽';
+            // return to the old background color to indicate the current sorting order
+            sortBtn.style.backgroundColor = '';
+        }
+        isOrderDescending = !isOrderDescending; // Toggle the sorting order
+    }
+
+    const sortBtn = document.getElementById('sortBtn');
+    if (sortBtn) {
+
+        sortBtn.addEventListener('click', () => setupSortingToggle());
+        
+        console.log("Sort button listener attached");
+    }
 
     // Kickoff
     init();

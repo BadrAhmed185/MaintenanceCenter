@@ -187,13 +187,24 @@
     // 10. Status Badges
     function getStatusBadge(statusInt) {
         switch (statusInt) {
-            case 0: return `<span class="badge bg-primary px-3 py-2">تم الاستلام</span>`;
-            case 1: return `<span class="badge bg-warning text-dark px-3 py-2">تحت الفحص</span>`;
-            case 2: return `<span class="badge" style="background-color: #6f42c1; color: white;">المقايسة جاهزة</span>`;
-            case 3: return `<span class="badge bg-info text-dark px-3 py-2">جاري التصليح</span>`;
-            case 4: return `<span class="badge bg-success px-3 py-2">جاهز للاستلام</span>`;
-            case 5: return `<span class="badge bg-secondary px-3 py-2">تم التسليم</span>`;
-            default: return `<span class="badge bg-dark px-3 py-2">مجهول</span>`;
+            case 1: // Received
+                return `<span class="badge bg-primary px-3 py-2">تم الاستلام</span>`;
+            case 2: // UnderInspection
+                return `<span class="badge bg-warning text-dark px-3 py-2">تحت الفحص</span>`;
+            case 3: // QuotationReady
+                return `<span class="badge" style="background-color: #6f42c1; color: white;">المقايسة جاهزة</span>`;
+            case 4: // QuotationRejected
+                return `<span class="badge bg-danger px-3 py-2">رفض المقايسة</span>`;
+            case 5: // Unrepairable
+                return `<span class="badge bg-dark px-3 py-2">غير قابل للإصلاح</span>`;
+            case 6: // UnderRepair
+                return `<span class="badge bg-info text-dark px-3 py-2">جاري التصليح</span>`;
+            case 7: // ReadyForDelivery
+                return `<span class="badge bg-success px-3 py-2">جاهز للاستلام</span>`;
+            case 8: // Delivered
+                return `<span class="badge bg-secondary px-3 py-2">تم التسليم</span>`;
+            default:
+                return `<span class="badge bg-secondary px-3 py-2">مجهول</span>`;
         }
     }
 

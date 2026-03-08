@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MaintenanceCenter.Web.Controllers.Api
 {
-    // [Authorize(Roles = "Admin")] 
+     [Authorize(Roles = "Admin")] 
     public class TechniciansController : BaseApiController
     {
         private readonly ITechnicianService _technicianService;
@@ -16,6 +16,7 @@ namespace MaintenanceCenter.Web.Controllers.Api
         }
 
         [HttpGet]
+
         public async Task<ActionResult> GetAll()
         {
             var result = await _technicianService.GetAllAsync();
