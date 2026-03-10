@@ -36,7 +36,7 @@ namespace MaintenanceCenter.Application.Common
             }
 
             var token = new JwtSecurityToken(
-                issuer: _jwtSettings.ValidIssuer,
+             //   issuer: _jwtSettings.ValidIssuer,
              //   audience: _jwtSettings.ValidAudience,
                 claims: claims,
                 expires: DateTime.UtcNow.AddHours(_jwtSettings.DurationInHours),
@@ -50,7 +50,7 @@ namespace MaintenanceCenter.Application.Common
     public class JwtSettings
     {
         public string SecretKey { get; set; } = string.Empty;
-        public string ValidIssuer { get; set; } = string.Empty;
+      //  public string ValidIssuer { get; set; } = string.Empty;
       //  public string ValidAudience { get; set; } = string.Empty;
         public int DurationInHours { get; set; }
     }

@@ -3,7 +3,7 @@
 const ApiClient = (function () {
     // We use relative paths since the API and MVC are on the same server,
     // but you can define a BaseUrl here if you ever separate them.
-    const baseUrl = '/api';
+    const baseUrl = '~/api';
 
     async function request(endpoint, method = 'GET', data = null) {
         const url = `${baseUrl}${endpoint}`;
@@ -26,7 +26,7 @@ const ApiClient = (function () {
 
             // Global 401 Unauthorized Interceptor
             if (response.status === 401) {
-                window.location.href = '/Auth/Login?sessionExpired=true';
+                window.location.href = '~/Auth/Login?sessionExpired=true';
                 return null;
             }
 

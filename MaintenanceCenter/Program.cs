@@ -116,8 +116,8 @@ namespace MaintenanceCenter
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecretKey)),
 
                     // UNCOMMENTED AND CONFIGURED:
-                    ValidateIssuer = true,
-                    ValidIssuer = jwtSettings.ValidIssuer,
+                    ValidateIssuer = false,
+                   // ValidIssuer = jwtSettings.ValidIssuer,
 
                     ValidateAudience = false,
                    // ValidAudience = jwtSettings.ValidAudience,

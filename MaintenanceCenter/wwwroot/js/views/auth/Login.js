@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
             confirmButtonColor: '#003366'
         });
         // Clean up the URL
-        window.history.replaceState({}, document.title, "/Auth/Login");
+        window.history.replaceState({}, document.title, "~/Auth/Login");
     }
 
     loginForm.addEventListener('submit', async function (e) {
@@ -41,14 +41,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 switch (role) {
                     case 'Admin':
-                        window.location.href = '/Admin/Dashboard'; // Will build this next
+                        window.location.href = '~/Admin/Dashboard'; // Will build this next
                         break;
                     case 'Technician':
-                        window.location.href = '/Technicians/Workspace'; // Will build this next
+                        window.location.href = '~/Technicians/Workspace'; // Will build this next
                         break;
                     case 'Receptionist':
                     default:
-                        window.location.href = '/Reception/index';
+                        window.location.href = '~/Reception/index';
                         break;
                 }
             }
