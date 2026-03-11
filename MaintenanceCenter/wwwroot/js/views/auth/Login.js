@@ -41,14 +41,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 switch (role) {
                     case 'Admin':
-                        window.location.href = '/engmnt/Admin/Dashboard'; // Will build this next
+                        window.location.href = '/Admin/Dashboard'; // Will build this next
                         break;
                     case 'Technician':
-                        window.location.href = '/engmnt/Technicians/Workspace'; // Will build this next
+                        window.location.href = '/Technicians/Workspace'; // Will build this next
                         break;
                     case 'Receptionist':
                     default:
-                        window.location.href = '/engmnt/Reception/index';
+                        window.location.href = '/Reception/index';
                         break;
                 }
             }
