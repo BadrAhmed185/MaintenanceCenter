@@ -26,7 +26,7 @@ const ApiClient = (function () {
 
             // Global 401 Unauthorized Interceptor
             if (response.status === 401) {
-                window.location.href = '~/Auth/Login?sessionExpired=true';
+                window.location.href = '/engmnt/Auth/Login?sessionExpired=true';
                 return null;
             }
 
